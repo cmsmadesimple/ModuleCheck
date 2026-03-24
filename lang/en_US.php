@@ -7,10 +7,6 @@
 $lang['friendlyname'] = 'Module Check';
 $lang['admindescription'] = 'Checks installed modules for best practices, security, and metadata compliance.';
 $lang['help'] = 'See the Help tab for full documentation.';
-$lang['help_tab_overview'] = 'Overview';
-$lang['help_tab_checks'] = 'Checks';
-$lang['help_tab_scoring'] = 'Scoring';
-$lang['help_tab_changelog'] = 'Changelog';
 $lang['ask_uninstall'] = 'Are you sure you want to uninstall Module Check? No data will be lost.';
 
 // Admin UI
@@ -51,7 +47,7 @@ $lang['check'] = 'Check';
 
 // Check: Module Class
 $lang['error_missing_module_file'] = 'Main module file "%s" is missing. Every module must have a main class file named ModuleName.module.php.';
-$lang['error_invalid_class_declaration'] = 'Module class "%s" does not properly extend CMSModule. The class declaration must be: class %s extends CMSModule';
+$lang['error_invalid_class_declaration'] = 'Module class "%s" does not have a valid class declaration. Expected: class ModuleName extends CMSModule (or a CMSModule subclass).';
 $lang['error_class_name_mismatch'] = 'Class name "%s" does not match the module directory name "%s". These must be identical.';
 $lang['error_module_not_loadable'] = 'Module "%s" could not be loaded. It may have syntax errors or missing dependencies.';
 $lang['error_missing_required_method'] = 'Required method "%s" is missing. %s.';

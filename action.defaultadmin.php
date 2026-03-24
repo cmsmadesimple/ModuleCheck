@@ -83,6 +83,7 @@ foreach ($modules as $name => $mod_obj) {
 
 $smarty = cmsms()->GetSmarty();
 $tpl = $smarty->CreateTemplate($this->GetTemplateResource('defaultadmin.tpl'), null, null, $smarty);
+$tpl->assign('mod', $this);
 $tpl->assign('module_list', $module_list);
 $tpl->assign('selected_module', $selected_module);
 $tpl->assign('results', $results);

@@ -76,8 +76,8 @@ class Check_ModuleStructure extends AbstractCheck
         // doc/LICENSE (required)
         $doc_dir = $module_path . $ds . 'doc';
         if (!is_dir($doc_dir)) {
-            $results[] = $this->error('missing_doc_directory',
-                $this->mod->Lang('error_missing_directory', 'doc/'), 7);
+            $results[] = $this->warning('missing_doc_directory',
+                $this->mod->Lang('warning_missing_directory', 'doc/'), 5);
         } elseif (!is_file($doc_dir . $ds . 'LICENSE')) {
             $results[] = $this->error('missing_license_file',
                 $this->mod->Lang('error_missing_file', 'doc/LICENSE'), 7);

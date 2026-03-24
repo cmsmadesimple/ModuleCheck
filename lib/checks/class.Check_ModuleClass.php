@@ -44,18 +44,15 @@ class Check_ModuleClass extends AbstractCheck
 
         $contents = $this->getFileContents($main_file);
 
-        // Check class declaration extends CMSModule
-        if (!preg_match('/class\s+' . preg_quote($module_name) . '\s+extends\s+CMSModule/i', $contents)) {
-            $results[] = $this->error('invalid_class_declaration',
-                $this->mod->Lang('error_invalid_class_declaration', $module_name), 9, $main_file);
-        }
-
-        // Check class name matches module directory name
-        if (preg_match('/class\s+(\w+)\s+extends\s+CMSModule/i', $contents, $m)) {
+        // Check class declaration extends CMSModule (directly or indirectly)
+        if (preg_match('/class\s+(\w+)\s+extends\s+([\\\w]+)/i', $contents, $m)) {
             if ($m[1] !== $module_name) {
                 $results[] = $this->error('class_name_mismatch',
                     $this->mod->Lang('error_class_name_mismatch', $m[1], $module_name), 8, $main_file);
             }
+        } else {
+            $results[] = $this->error('invalid_class_declaration',
+                $this->mod->Lang('error_invalid_class_declaration', $module_name), 9, $main_file);
         }
 
         if (!$module) {

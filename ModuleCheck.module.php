@@ -54,16 +54,14 @@ class ModuleCheck extends CMSModule
 
     public function GetHelp()
     {
-        $smarty = cmsms()->GetSmarty();
-        $mod = $this;
-        $tpl = $smarty->CreateTemplate($this->GetTemplateResource('help.tpl'), null, null, $smarty);
-        $tpl->assign('mod', $mod);
-        return $tpl->fetch();
+        $fn = __DIR__ . '/doc/help.inc';
+        return (is_file($fn)) ? @file_get_contents($fn) : '';
     }
 
     public function GetChangeLog()
     {
-        return '<ul><li>Version 1.0.0 - Initial release with 13 automated checks, category/type filtering, and scoring system.</li></ul>';
+        $fn = __DIR__ . '/doc/changelog.inc';
+        return (is_file($fn)) ? @file_get_contents($fn) : '';
     }
 
     public function InitializeAdmin() {}
