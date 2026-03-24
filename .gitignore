@@ -1,0 +1,7 @@
+# Release archives
+releases/
+.vscode/
+.amazonq/
+*.ini
+*.zip
+*.sql
