@@ -30,27 +30,25 @@ class ModuleCheck extends CMSModule
         return $this->CheckPermission(self::MANAGE_PERM);
     }
 
-    
-    public function __construct(){
-		spl_autoload_register( array($this, '_autoloader') );
-		
-		parent::__construct();
-
+    public function __construct()
+    {
+        spl_autoload_register([$this, '_autoloader']);
+        parent::__construct();
     }
 
-	private function _autoloader($classname)
-	{
-		$parts = explode('\\', $classname);
-		$classname = end($parts);
-		$base = $this->GetModulePath() . DIRECTORY_SEPARATOR . 'lib';
-		$filename = 'class.' . $classname . '.php';
+    private function _autoloader($classname)
+    {
+        $parts = explode("\\", $classname);
+        $classname = end($parts);
+        $base = $this->GetModulePath() . DIRECTORY_SEPARATOR . 'lib';
+        $filename = 'class.' . $classname . '.php';
 
-		$fn = $base . DIRECTORY_SEPARATOR . $filename;
-		if (file_exists($fn)) { require_once($fn); return; }
+        $fn = $base . DIRECTORY_SEPARATOR . $filename;
+        if (file_exists($fn)) { require_once($fn); return; }
 
-		$fn = $base . DIRECTORY_SEPARATOR . 'checks' . DIRECTORY_SEPARATOR . $filename;
-		if (file_exists($fn)) { require_once($fn); }
-	}
+        $fn = $base . DIRECTORY_SEPARATOR . 'checks' . DIRECTORY_SEPARATOR . $filename;
+        if (file_exists($fn)) { require_once($fn); }
+    }
 
     public function GetHelp()
     {
@@ -66,6 +64,44 @@ class ModuleCheck extends CMSModule
 
     public function InitializeAdmin() {}
     public function InitializeFrontend() {}
+
+    /**
+     * Get ordered list of check class basenames.
+     */
+    public function GetCheckClasses(): array
+    {
+        $files = glob(__DIR__ . '/lib/checks/class.Check_*.php');
+        $list = [];
+        foreach ($files as $file) {
+            $list[] = str_replace('class.', '', basename($file, '.php'));
+        }
+        return $list;
+    }
+
+    /**
+     * Run a single check class against a module. Returns findings array.
+     */
+    public function RunSingleCheck(string $check_class, string $module_name, array $categories = [], array $types = []): array
+    {
+        $module_path = CMS_ROOT_PATH . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . $module_name;
+        if (!is_dir($module_path)) return [];
+
+        $fqcn = "ModuleCheck\\{$check_class}";
+        if (!class_exists($fqcn)) return [];
+
+        $check = new $fqcn($this);
+
+        if (!empty($categories) && !array_intersect($check->getCategories(), $categories)) return [];
+
+        $mod = \cms_utils::get_module($module_name);
+        $results = $check->run($module_name, $module_path, $mod);
+
+        if (!empty($types)) {
+            $results = array_values(array_filter($results, fn($r) => in_array($r['type'], $types)));
+        }
+
+        return $results;
+    }
 
     /**
      * Get list of installed modules available for checking.
@@ -101,17 +137,15 @@ class ModuleCheck extends CMSModule
         $results = [];
 
         foreach (glob(__DIR__ . '/lib/checks/class.Check_*.php') as $file) {
-            $class_name = 'ModuleCheck\\' . str_replace('class.', '', basename($file, '.php'));
+            $class_name = "ModuleCheck\\" . str_replace('class.', '', basename($file, '.php'));
             if (!class_exists($class_name)) continue;
 
             $check = new $class_name($this);
 
-            // Filter by categories
             if (!empty($categories) && !array_intersect($check->getCategories(), $categories)) continue;
 
             $check_results = $check->run($module_name, $module_path, $mod);
 
-            // Filter by types
             if (!empty($types)) {
                 $check_results = array_filter($check_results, fn($r) => in_array($r['type'], $types));
             }

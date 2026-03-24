@@ -93,10 +93,10 @@ class Check_FileHeaders extends AbstractCheck
     {
         // Remove comments
         $cleaned = preg_replace('#/\*.*?\*/#s', '', $contents);
-        $cleaned = preg_replace('#//.*$#m', '', $cleaned);
-        $cleaned = preg_replace('/#.*$#m', '', $cleaned);
+        $cleaned = preg_replace('#//.*$#m', '', $cleaned ?? '');
+        $cleaned = preg_replace('/\#.*$/m', '', $cleaned ?? '');
 
-        return (bool) preg_match('/^\s*<\?php\s*(namespace\s+[^;]+;\s*)?(use\s+[^;]+;\s*)*\s*(\/\*.*?\*\/\s*)?(abstract\s+|final\s+)?(class|interface|trait)\s+\w+/is', $cleaned);
+        return (bool) preg_match('/^\s*<\?php\s*(namespace\s+[^;]+;\s*)?(use\s+[^;]+;\s*)*\s*(\/\*.*?\*\/\s*)?(abstract\s+|final\s+)?(class|interface|trait)\s+\w+/is', $cleaned ?? '');
     }
 
     private function hasLicenseHeader(string $contents): bool

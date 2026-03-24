@@ -45,6 +45,23 @@ $lang['pass'] = 'Pass';
 $lang['fail'] = 'Fail';
 $lang['check'] = 'Check';
 
+// Progress / Check display names
+$lang['scanning'] = 'Scanning';
+$lang['check_name_check_adminpermissions'] = 'Admin Permissions';
+$lang['check_name_check_codeobfuscation'] = 'Code Obfuscation';
+$lang['check_name_check_deprecatedphp'] = 'Deprecated PHP';
+$lang['check_name_check_fileheaders'] = 'File Headers';
+$lang['check_name_check_filetypes'] = 'File Types';
+$lang['check_name_check_installuninstall'] = 'Install / Uninstall';
+$lang['check_name_check_localhost'] = 'Localhost References';
+$lang['check_name_check_methodsignatures'] = 'Method Signatures';
+$lang['check_name_check_moduleclass'] = 'Module Class';
+$lang['check_name_check_moduleinfo'] = 'Module Info';
+$lang['check_name_check_modulestructure'] = 'Module Structure';
+$lang['check_name_check_prgpattern'] = 'PRG Pattern';
+$lang['check_name_check_security'] = 'Security';
+$lang['check_name_check_templates'] = 'Templates';
+
 // Check: Module Class
 $lang['error_missing_module_file'] = 'Main module file "%s" is missing. Every module must have a main class file named ModuleName.module.php.';
 $lang['error_invalid_class_declaration'] = 'Module class "%s" does not have a valid class declaration. Expected: class ModuleName extends CMSModule (or a CMSModule subclass).';

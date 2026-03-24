@@ -45,7 +45,8 @@ class Check_ModuleClass extends AbstractCheck
         $contents = $this->getFileContents($main_file);
 
         // Check class declaration extends CMSModule (directly or indirectly)
-        if (preg_match('/class\s+(\w+)\s+extends\s+([\\\w]+)/i', $contents, $m)) {
+        $matched = preg_match('/\bclass\s+(\w+)\s+extends\s+/i', $contents, $m);
+        if ($matched) {
             if ($m[1] !== $module_name) {
                 $results[] = $this->error('class_name_mismatch',
                     $this->mod->Lang('error_class_name_mismatch', $m[1], $module_name), 8, $main_file);

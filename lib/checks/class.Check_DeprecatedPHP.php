@@ -19,7 +19,6 @@ class Check_DeprecatedPHP extends AbstractCheck
         '/\beach\s*\(/'           => ['warning_deprecated_php_each', 5],
 
         // Deprecated CMSMS APIs
-        '/GetModuleInstance\s*\(/' => ['warning_deprecated_get_module_instance', 5],
         '/\bCreateURL\s*\(/'       => ['warning_deprecated_create_url', 4],
     ];
 
